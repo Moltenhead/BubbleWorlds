@@ -1,0 +1,13 @@
+.Brush {
+  width: 5vmin;
+  height: 5vmin;
+  border-radius: 50%;
+
+  transform: translate(-50%, -50%);
+
+  position: absolute;
+}
+
+.Brush.default {
+  background-color: black;
+}
