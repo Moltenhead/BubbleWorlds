@@ -1,8 +1,8 @@
 import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import logo from "../logo.svg";
+import "./index.scss";
 
-import Canvas from "./components/Canvas";
+import Canvas from "../components/Canvas";
 
 function App() {
   return (
