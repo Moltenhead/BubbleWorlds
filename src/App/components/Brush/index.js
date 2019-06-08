@@ -1,7 +1,20 @@
-import React, { Component } from "react";
+import React from "react";
+import BaseComponent from "../BaseComponent";
 import "./index.scss";
 
-class Brush extends Component {
+import Selector from "./Selector";
+
+class Brush extends BaseComponent {
+  constructor(props) {
+    super(props, [props.brushType], ["Brush"]);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.brushStyle !== prevProps.brushStyle) {
+      this.appendClass(prevProps.brushStyle);
+    }
+  }
+
   state = {};
 
   render() {
@@ -9,9 +22,11 @@ class Brush extends Component {
     return (
       <div
         ref={node => (this.brushRef = node)}
-        className={`Brush ${this.props.brushType}`}
+        className={this.state.className}
         style={brushStyle}
-      />
+      >
+        <Selector />
+      </div>
     );
   }
 }

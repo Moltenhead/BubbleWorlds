@@ -1,11 +1,22 @@
-import React, { Component } from "react";
+import React from "react";
+import BaseComponent from "../BaseComponent";
 import "./index.scss";
-
-import ClassNameHandler from "../../../lib/utilities/ClassNameHandler"
 
 import Brush from "../Brush";
 
-class Canvas extends Component {
+class Canvas extends BaseComponent {
+  constructor(props) {
+    super(props, ["noMouse"], ["Canvas", "debug"]);
+    this.define({
+      brushType: "string",
+      active: "boolean",
+      moving: "boolean",
+      mouseDown: "boolean",
+      target_left: "number",
+      target_top: "number"
+    });
+  }
+
   state = {
     active: false,
     moving: false,
@@ -13,121 +24,47 @@ class Canvas extends Component {
   };
 
   mouseStopTimeout = null;
-  classNameHandler = new ClassNameHandler(["noMouse"]);
-  previousType= "default";
 
-  appendClass(str) {
-    this.setState({classNameAdditions: this.classNameHandler.append(str).toString()});
-  }
-  removeClass(str) {
-    this.setState({classNameAdditions: this.classNameHandler.remove(str).toString()});
-  }
+  previousType = "default";
 
-  appendActiveClass() {
-    this.appendClass("active");
-  }
-  removeActiveClass() {
-    this.removeClass(["active", "moving"]);
-  }
-
-  appendMovingClass() {
-    this.appendClass("moving");
-  }
-  removeMovingClass() {
-    this.removeClass("moving");
-  }
-
-  appendMouseDownClass() {
-    this.appendClass("mouse-down");
-  }
-  removeMouseDownClass() {
-    this.removeClass("mouse-down");
-  }
-
-  appendNoMouseClass() {
-    this.appendClass("noMouse");
-  }
-  removeNoMouseClass() {
-    this.removeClass("noMouse");
-  }
-
-  activeTo(bool) {
-    this.setState({
-      active: bool
-    });
-  }
-  movingTo(bool) {
-    this.setState({
-      moving: bool
-    });
-  }
-  mouseDownTo(bool) {
-    this.setState({
-      mouseDown: bool
-    });
-  }
-  brushTypeTo(str) {
+  setBrushType(str) {
     this.previousType = this.state.brushType;
-    this.setState({
-      brushType: str
-    });
+    this.set("brushType", str);
   }
-
-  setActive() {
-    this.activeTo(true);
-    this.appendActiveClass();
-  }
-  unsetActive() {
-    this.activeTo(false);
-    this.removeActiveClass();
-  }
-
-  setMoving() {
-    this.movingTo(true);
-    this.appendMovingClass();
-  }
-  unsetMoving() {
-    this.movingTo(false);
-    this.removeMovingClass();
-  }
-
-  setMouseDown() {
-    this.mouseDownTo(true);
-    this.removeNoMouseClass();
-    this.appendMouseDownClass();
-  }
-  unsetMouseDown() {
-    this.mouseDownTo(false);
-    this.appendNoMouseClass();
-    this.removeMouseDownClass();
-  }
-
 
   handleMouseEnter = e => {
-    this.setActive();
-  }
+    this.set("active");
+  };
   handleMouseLeave = e => {
-    this.unsetActive();
-  }
+    this.unset("active");
+  };
 
   handleMouseDown = e => {
-    if (this.state.active)
-      this.setMouseDown();
-
-  }
+    if (this.state.active) {
+      this.removeClass("noMouse");
+      this.set("mouseDown");
+    }
+  };
   handleMouseUp = e => {
-    this.unsetMouseDown();
-  }
+    this.appendClass("noMouse");
+    this.unset("mouseDown");
+    this.updatePositionTarget(e);
+  };
 
   initMoving() {
-    this.setMoving();
+    this.set("moving");
     clearTimeout(this.mouseStopTimeout);
     const _this = this;
-    this.mouseStopTimeout = setTimeout(function() { _this.unsetMoving() }, 30, this);
+    this.mouseStopTimeout = setTimeout(
+      () => {
+        _this.unset("moving");
+      },
+      30,
+      this
+    );
   }
 
   handleMouseMove = e => {
-    console.log(this.state.active && this.state.mouseDown === false)
     if (this.state.active && this.state.mouseDown === false) {
       this.initMoving();
       this.updatePositionTarget(e);
@@ -135,28 +72,28 @@ class Canvas extends Component {
   };
 
   updatePositionTarget(e) {
-    this.setState({
+    this.stater = {
       target_left: e.clientX,
       target_top: e.clientY
-    });
+    };
   }
 
   render() {
+    const className = this.state.className;
+    const x = this.state.target_left;
+    const y = this.state.target_top;
+    const brushType = this.state.brushType;
     return (
       <div
         ref={node => (this.canvasRef = node)}
-        className={`Canvas debug ${this.state.classNameAdditions}`}
+        className={className}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
         onMouseMove={this.handleMouseMove}
         onMouseDown={this.handleMouseDown}
         onMouseUp={this.handleMouseUp}
       >
-        <Brush
-          x={this.state.target_left}
-          y={this.state.target_top}
-          brushType={this.state.brushType}
-        />
+        <Brush x={x} y={y} brushType={brushType} />
       </div>
     );
   }
