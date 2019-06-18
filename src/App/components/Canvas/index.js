@@ -27,28 +27,27 @@ class Canvas extends BaseComponent {
 
   previousType = "default";
 
-  setBrushType(str) {
-    this.previousType = this.state.brushType;
-    this.set("brushType", str);
-  }
-
   handleMouseEnter = e => {
     this.set("active");
   };
   handleMouseLeave = e => {
-    this.unset("active");
+    this.appendClass("noMouse");
+    this.unsetAll({ active: false, mouseDown: false });
+    this.stater = { brushType: "default" };
   };
 
   handleMouseDown = e => {
     if (this.state.active) {
       this.removeClass("noMouse");
       this.set("mouseDown");
+      this.stater = { brushType: "selector" };
     }
   };
   handleMouseUp = e => {
     this.appendClass("noMouse");
     this.unset("mouseDown");
     this.updatePositionTarget(e);
+    this.stater = { brushType: "default" };
   };
 
   initMoving() {
