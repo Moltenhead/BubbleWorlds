@@ -78,6 +78,9 @@ class Typer {
       return null;
     }
   }
+  getValidKeysIn(object) {
+    return Object.keys(this.getValidIn(object));
+  }
 
   get(key) {
     return this.typeLister[key];
