@@ -7,12 +7,27 @@ import Selector from "./Selector";
 class Brush extends BaseComponent {
   constructor(props) {
     super(props, [props.brushType], ["Brush"]);
+    this.define({
+      brushType: "string"
+    });
   }
 
+  prevBrushType = this.props.brushType;
+
   componentDidUpdate(prevProps) {
-    if (this.props.brushStyle !== prevProps.brushStyle) {
-      this.appendClass(prevProps.brushStyle);
+    if (this.props.brushType !== prevProps.brushType) {
+      this.setBrushType(this.props.brushType);
     }
+  }
+
+  setBrushType(str) {
+    this.unsetPrevBrush();
+    this.prevBrushType = str;
+    this.set("brushType", str);
+  }
+
+  unsetPrevBrush() {
+    this.removeClass(this.prevBrushType);
   }
 
   state = {};
