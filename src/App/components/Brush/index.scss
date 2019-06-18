@@ -3,6 +3,8 @@
   height: 30px;
   border-radius: 50%;
 
+  background-color: inherit;
+
   transform: translate(-50%, -50%);
 
   position: absolute;
@@ -10,18 +12,35 @@
   opacity: 1;
 
   transition: opacity .1s;
-}
 
-.Brush.default {
-  background: none;
-  border: 3px solid rgba(#000, .8);
-  box-shadow:
-    0 0 2px 3px rgba(#000, .1),
-    inset 0 0 5px 3px rgba(#000, .3);
-}
+  &.default, &.selector {
+    background: none;
+    border-width: 3px;
+    border-style: solid;
+  }
 
-.Brush.off {
-  opacity: 0;
+  &.default {
+    border-color: #000;
+    box-shadow:
+      0 0 2px 3px rgba(#000, .1),
+      inset 0 0 5px 3px rgba(#000, .3);
+  }
 
-  transition: opacity 3s;
+  &.selector {
+    width: 390px;
+    height: 390px;
+
+    background-color: #000;
+
+    border: none;
+    //border-width: 2px;
+
+    box-shadow: inset 0 0 50px 5px rgba(#fff, .8);
+
+    transition: width .08s, height .08s, background-color .1s !important;
+  }
+
+  &.off {
+    opacity: 0;
+  }
 }

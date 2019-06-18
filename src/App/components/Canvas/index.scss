@@ -4,27 +4,32 @@
   top: 0;
   right: 0;
   bottom: 0;
-}
 
-.Canvas.debug {
-  background-color: rgba(#000,.2)
-}
+  &.debug {
+    background-color: rgba(#000,.1);
 
-.Canvas.active > .Brush {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
+    box-shadow: inset 0 0 50px 0 rgba(#000, .5);
+  }
 
-  transition: opacity .1s, transform .2s, left .1s, top .1s;
-}
-.Canvas.moving > .Brush {
-  transform: translate(-50%, -50%) scale(.9);
+  & > .Brush {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(.1);
+  
+    transition: opacity .5s, transform .3s, left .2s, top .2s, width .05s, height .05s, background-color .3s;
+  }  
 
-  transition: transform .2s, left .02s, top .02s;
-}
+  &.active > .Brush {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
 
-.Canvas > .Brush {
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(.1);
+    transition: opacity .1s, transform .2s, left .1s, top .1s, width .05s, height .05s, background-color .3s;
+  }
 
-  transition: opacity .5s, transform .3s, left .2s, top .2s;
+  &.moving > .Brush {
+    border-width: 2px;
+
+    transform: translate(-50%, -50%) scale(.9);
+  
+    transition: transform .2s, left .02s, top .02s, width .05s, height .05s, background-color .3s;
+  }
 }
