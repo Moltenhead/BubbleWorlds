@@ -39,10 +39,15 @@ class BaseComponent extends Component {
   }
 
   set(key, value = undefined) {
-    value = this.typer.get(key) === "boolean" ? true : value;
+    const type = this.typer.get(key);
+    value = type === "boolean" ? true : value;
     const validValue = this.typer.validate(key, value);
     if (validValue !== undefined) {
-      this.appendClass(key);
+      if (type === "boolean") {
+        this.appendClass(key);
+      } else if (type === "string") {
+        this.appendClass(value);
+      }
       this.stater = { [key]: value };
     }
 
