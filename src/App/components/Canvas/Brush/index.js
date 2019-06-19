@@ -1,5 +1,5 @@
 import React from "react";
-import BaseComponent from "../BaseComponent";
+import BaseComponent from "../../BaseComponent";
 import "./index.scss";
 
 import Selector from "./Selector";
@@ -13,6 +13,8 @@ class Brush extends BaseComponent {
   }
 
   prevBrushType = this.props.brushType;
+
+  selectorOptions = [{ title: "add sample", modelName: "Sample" }];
 
   componentDidUpdate(prevProps) {
     if (this.props.brushType !== prevProps.brushType) {
@@ -40,7 +42,7 @@ class Brush extends BaseComponent {
         className={this.state.className}
         style={brushStyle}
       >
-        <Selector />
+        <Selector options={this.selectorOptions} />
       </div>
     );
   }

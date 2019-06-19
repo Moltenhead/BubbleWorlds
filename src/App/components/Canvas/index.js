@@ -2,7 +2,7 @@ import React from "react";
 import BaseComponent from "../BaseComponent";
 import "./index.scss";
 
-import Brush from "../Brush";
+import Brush from "./Brush";
 
 class Canvas extends BaseComponent {
   constructor(props) {
